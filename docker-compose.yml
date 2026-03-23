@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+    command: python backend/app.py
+
+  frontend:
+    build: .
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    environment:
+      - API_BASE_URL=http://backend:5000
+    command: streamlit run frontend/streamlit_app.py --server.port=8501 --server.address=0.0.0.0
